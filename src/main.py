@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from dbItems import db
 from models import JobModel, JobInputModel, JobUpdateModel
-from typing import List
+from typing import List, Any
 from datetime import datetime
 
 app = FastAPI()
@@ -14,12 +14,13 @@ def root():
     return {"Hello": "World", "Name": "Mic"}
 
 
-# TODO: rewrite this as List method
+# TODO: change the function name to List method
 @app.get("/v1/jobs")
 def get_jobs() -> List[JobModel]:
     return db
 
 
+# TODO: change the function name to get by method
 @app.get("/v1/jobs/{job_id}")
 def get_job_by_id(job_id: int) -> JobModel:
     for job in db:
@@ -52,12 +53,18 @@ def delete_job(job_id: int) -> None:
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
 
 
-# TODO: check if working
 @app.patch("/v1/jobs/{job_id}")
-def update_job(job_update: JobUpdateModel, job_id: int) -> JobModel:
+def update_job(job_update: JobUpdateModel, job_id: int) -> Any:
     for job in db:
         if job.id == job_id:
             update_data = job_update.dict(exclude_unset=True)  # exclude default values
             job = job.copy(update=update_data)
+            # TODO: the update does not show inside the object in the db - fix
             return job
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
+
+
+job_update = JobUpdateModel(position="pos3", location="Center")
+res = update_job(job_update, 10)
+print(res)
+print(db[-1])
