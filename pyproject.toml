@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "board-backend"
+version = "0.1.0"
+description = ""
+authors = ["michalalayev <69872249+michalalayev@users.noreply.github.com>"]
+readme = "README.md"
+license = "MIT"
+#packages = [{ include = "board_backend", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.95.2"
+orjson = "^3.8.14"
+uvicorn = { extras = ["standard"], version = "^0.22.0" }
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^23.3.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88 # override black's default line-length
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.tox
+  | venv
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+# make it compatible with black
+profile = "black"
+
+[tool.flake8]
+# enable logging-format plugin: https://github.com/globality-corp/flake8-logging-format
+enabled-extensions = "G"
+ignore = [
+    "W391",
+    # Black formatter is responsible for lines length
+    "E501",
+    # Line breaks before binary operator became best practice: https://www.flake8rules.com/rules/W503.html
+    "W503",
+    # Logging statement extra arguments don't need to be whitelisted, see G100 at: https://github.com/globality-corp/flake8-logging-format#violations-detected
+    "G100",
+]
+extend-ignore = ["W391", "E303"]
+# blank line at end of file
+extend-select = [
+    # builtins plugin: https://github.com/gforcada/flake8-builtins
+    # checks for accidental use of builtin functions as names
+    "A0",
+    # comprehensions plugin: https://github.com/adamchainz/flake8-comprehensions
+    # checks for misuse or lack of use of comprehensions
+    "C4",
+    # mutable plugin: https://github.com/ebeweber/flake8-mutable/blob/master/mutable_defaults.py
+    # checks for mutable default parameter values Python issue
+    "M511",
+    # naming plugin: https://github.com/PyCQA/pep8-naming
+    # checks that names follow Python standards defined in PEP8
+    "N8",
+    # simplify plugin: https://github.com/MartinThoma/flake8-simplify
+    # checks for general Python best practices for simpler code
+    "SIM",
+]
+exclude = [
+    # No need to traverse our git directory
+    ".git",
+    # There's no value in checking cache directories
+    "__pycache__",
+    # No need to scan virtual environment files
+    "venv",
+]
