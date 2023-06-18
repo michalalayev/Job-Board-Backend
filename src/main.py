@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from dbItems import db
 from models import JobModel, JobInputModel, JobUpdateModel
-from typing import List, Any
+from typing import List, Dict
 from datetime import datetime
+
+# from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
@@ -17,54 +19,59 @@ def root():
 # TODO: change the function name to List method
 @app.get("/v1/jobs")
 def get_jobs() -> List[JobModel]:
-    return db
+    return list(db.values())
 
 
 # TODO: change the function name to get by method
 @app.get("/v1/jobs/{job_id}")
 def get_job_by_id(job_id: int) -> JobModel:
-    for job in db:
-        if job.id == job_id:
-            return job
+    if job_id in db:
+        return db[job_id]
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
 
 
-# TODO: change the model to assign id in a better way,
-#       check if working
+# TODO: - change the model to assign id in a better way,
+#       - check if working
 @app.post("/v1/jobs")
 def create_job(job_input: JobInputModel) -> JobModel:
     creation_time = datetime.now()
+    id = len(db)
     fields = {
-        "id": len(db),
+        "id": id,
         "created_date": creation_time,
         "last_modified": creation_time,
     }
-    job = JobModel(**fields, **job_input.dict())
-    db.append(job)
-    return job
+    new_job = JobModel(**fields, **job_input.dict())
+    db[id] = new_job
+    return new_job
 
 
 @app.delete("/v1/jobs/{job_id}")
-def delete_job(job_id: int) -> None:
-    for job in db:
-        if job.id == job_id:
-            db.remove(job)
-            return
+def delete_job(job_id: int) -> Dict[str, str]:
+    if job_id in db:
+        db.pop(job_id)
+        return {"detail": f"Job with id {job_id} was deleted"}
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
 
 
 @app.patch("/v1/jobs/{job_id}")
-def update_job(job_update: JobUpdateModel, job_id: int) -> Any:
-    for job in db:
-        if job.id == job_id:
-            update_data = job_update.dict(exclude_unset=True)  # exclude default values
-            job = job.copy(update=update_data)
-            # TODO: the update does not show inside the object in the db - fix
-            return job
+def update_job(job_update: JobUpdateModel, job_id: int) -> JobModel:
+    if job_id in db:
+        stored_job = db[job_id]
+        # stored_job_model = JobModel(**stored_job)
+        update_data = job_update.dict(exclude_unset=True)  # exclude default values
+        update_data["last_modified"] = datetime.now()
+        updated_job = stored_job.copy(update=update_data)
+        db[job_id] = updated_job
+        # db[job_id] = jsonable_encoder(updated_job)
+        return updated_job
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
 
 
-job_update = JobUpdateModel(position="pos3", location="Center")
+print(db[10], "\n")
+job_update = JobUpdateModel(position="pos2", location="Center")
 res = update_job(job_update, 10)
-print(res)
-print(db[-1])
+print(res, "\n")
+print(f"updated_job type: {type(res)}\n")
+print(db[10], "\n")
+print(f"type in db: {type(db[10])}")

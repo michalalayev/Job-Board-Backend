@@ -1,5 +1,8 @@
 {
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
-  "python.linting.flake8Args": ["--max-line-length=88"]
+  "python.linting.flake8Args": ["--max-line-length=88"],
+  "code-runner.executorMap": {
+    "python": "C:\\Users\\Michal\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\board-backend-TmIZwHiE-py3.11\\Scripts\\python.exe"
+  }
 }
