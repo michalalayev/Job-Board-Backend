@@ -1,0 +1,7 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# __pycache__ is the binary files which are created by python.
+
+src/__pycache__ 
+.env
+env
+test_db.db

@@ -12,11 +12,14 @@ python = "^3.11"
 fastapi = "^0.95.2"
 orjson = "^3.8.14"
 uvicorn = { extras = ["standard"], version = "^0.22.0" }
+sqlalchemy = "^2.0.16"
+httpx = "^0.24.1"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
 black = "^23.3.0"
 isort = "^5.12.0"
+pytest = "^7.3.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -24,19 +27,17 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88 # override black's default line-length
-exclude = '''
-/(
-    \.git
-  | \.mypy_cache
-  | \.tox
-  | venv
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+exclude = [
+    ".git",
+    "__pycache__",
+    ".tox",
+    "venv",
+    ".venv",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+]
 
 [tool.isort]
 # make it compatible with black
@@ -46,16 +47,13 @@ profile = "black"
 # enable logging-format plugin: https://github.com/globality-corp/flake8-logging-format
 enabled-extensions = "G"
 ignore = [
-    "W391",
-    # Black formatter is responsible for lines length
-    "E501",
-    # Line breaks before binary operator became best practice: https://www.flake8rules.com/rules/W503.html
-    "W503",
-    # Logging statement extra arguments don't need to be whitelisted, see G100 at: https://github.com/globality-corp/flake8-logging-format#violations-detected
-    "G100",
+    "E501", # Line too long (82 > 79 characters) -> Black formatter is responsible for lines length
+    "W503", # Line breaks before binary operator became best practice: https://www.flake8rules.com/rules/W503.html
+    "G100", # Logging statement extra arguments don't need to be whitelisted, see G100 at: https://github.com/globality-corp/flake8-logging-format#violations-detected
+    "W391", # Blank line at end of file
+    "E303", # Too many blank lines (3)
+    "E266", # Too many leading ‘#’ for block comment
 ]
-extend-ignore = ["W391", "E303"]
-# blank line at end of file
 extend-select = [
     # builtins plugin: https://github.com/gforcada/flake8-builtins
     # checks for accidental use of builtin functions as names

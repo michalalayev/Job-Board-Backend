@@ -1,5 +1,5 @@
 from typing import List, Dict
-from models import JobModel, Status
+from .models import JobModel, Status
 from datetime import datetime
 
 db: Dict[int, JobModel] = {
@@ -206,3 +206,10 @@ db_as_list: List[JobModel] = [
         status=Status.interview,
     ),
 ]
+
+# vals = list(db.values())
+# print(type(vals))
+# print(type(vals[0]))
+# d = vals[0].json()
+# print(type(d))
+# c = {"detail": "Invalid X-Token header"}

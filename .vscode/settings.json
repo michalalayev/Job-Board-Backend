@@ -1,8 +1,12 @@
 {
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
-  "python.linting.flake8Args": ["--max-line-length=88"],
+  "python.linting.flake8Args": [
+    "--max-line-length=88",
+    "--ignore=E402,F841,F401,E302,E305,E501,W503,G100,W391,E303,E266"
+  ],
   "code-runner.executorMap": {
     "python": "C:\\Users\\Michal\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\board-backend-TmIZwHiE-py3.11\\Scripts\\python.exe"
-  }
+  },
+  "python.analysis.typeCheckingMode": "strict"
 }
