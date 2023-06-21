@@ -1,5 +1,5 @@
 from typing import List, Dict
-from .models import JobModel, Status
+from .schemas import JobModel, Status
 from datetime import datetime
 
 db: Dict[int, JobModel] = {

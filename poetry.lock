@@ -553,6 +553,20 @@ dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
 [[package]]
+name = "pydantic-extra-types"
+version = "0.0.1"
+description = "Extra Pydantic types."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pydantic_extra_types-0.0.1-py3-none-any.whl", hash = "sha256:5dc2a3ea91dd5bdfd77bc6a9ae2b6cd5fe6f0adfc22583fbd9d721a8eadcd7dd"},
+    {file = "pydantic_extra_types-0.0.1.tar.gz", hash = "sha256:28ec44e70a804b6fd37517bf8f605734703f6b94adec298f38131d9333ea8447"},
+]
+
+[package.dependencies]
+pydantic = "*"
+
+[[package]]
 name = "pyflakes"
 version = "3.0.1"
 description = "passive checker of Python programs"
@@ -948,4 +962,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "654d86a668b0e661c9d668ac8e5e8d7ef4ca01a87c3e7ebce6bd8a8b955bba6d"
+content-hash = "2bc652c4b44ced7d843b7ac720c9a6494f3231132393dc78f91e3ef3e37784d9"

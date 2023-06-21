@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from .db_items import db
-from .models import JobModel, JobInputModel, JobUpdateModel
+from .schemas import JobModel, JobInputModel, JobUpdateModel
 from typing import List, Dict
 from datetime import datetime
 
@@ -11,18 +11,14 @@ router = APIRouter()
 
 @router.get("/")
 async def root():
-    print(type(db[0].dict()))
-    print(type(db[0]))
     return {"Hello": "World", "Name": "Mic"}
 
 
-# TODO: change the function name to List method
 @router.get("/v1/jobs")
-async def get_jobs() -> List[JobModel]:
+async def list_jobs() -> List[JobModel]:
     return list(db.values())
 
 
-# TODO: change the function name to get by method
 @router.get("/v1/jobs/{job_id}")
 async def get_job_by_id(job_id: int) -> JobModel:
     if job_id in db:
@@ -35,7 +31,7 @@ async def get_job_by_id(job_id: int) -> JobModel:
 @router.post("/v1/jobs")
 async def create_job(job_input: JobInputModel) -> JobModel:
     creation_time = datetime.now()
-    id = len(db)
+    id = len(db) + 100
     fields = {
         "id": id,
         "created_date": creation_time,
@@ -66,5 +62,3 @@ async def update_job(job_update: JobUpdateModel, job_id: int) -> JobModel:
         # db[job_id] = jsonable_encoder(updated_job)
         return updated_job
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
-
-
