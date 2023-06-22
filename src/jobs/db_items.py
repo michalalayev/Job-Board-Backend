@@ -2,6 +2,9 @@ from typing import List, Dict
 from .schemas import JobModel, Status
 from datetime import datetime
 
+# global db_last
+db_last: int = 10
+
 db: Dict[int, JobModel] = {
     0: JobModel(
         id=0,

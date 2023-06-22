@@ -16,7 +16,7 @@ class Status(str, Enum):
 class JobInputModel(BaseModel):
     position: str
     company: str
-    location: str | None
+    location: str | None = None
     status: Status | None = Status.wish_list
     # link: str
     # source: str
@@ -35,10 +35,10 @@ class JobModel(JobInputModel):
 
 
 class JobUpdateModel(BaseModel):
-    position: str | None
-    company: str | None
-    location: str | None
-    status: str | None
+    position: str | None = None
+    company: str | None = None
+    location: str | None = None
+    status: str | None = None
     # link: str
     # source: str
     # company_site: str
