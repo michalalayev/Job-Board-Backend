@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from .db_items import db, db_last
-from .schemas import JobModel, JobInputModel, JobUpdateModel
+from .schemas import JobEntityModel, JobCreationModel, JobUpdateModel
 from typing import List, Dict
 from datetime import datetime
 
@@ -15,12 +15,12 @@ async def root():
 
 
 @router.get("/v1/jobs")
-async def list_jobs() -> List[JobModel]:
+async def list_jobs() -> List[JobEntityModel]:
     return list(db.values())
 
 
 @router.get("/v1/jobs/{job_id}")
-async def get_job_by_id(job_id: int) -> JobModel:
+async def get_job_by_id(job_id: int) -> JobEntityModel:
     if job_id in db:
         return db[job_id]
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
@@ -28,7 +28,7 @@ async def get_job_by_id(job_id: int) -> JobModel:
 
 # TODO: change the model to assign id in a better way,
 @router.post("/v1/jobs")
-async def create_job(job_input: JobInputModel) -> JobModel:
+async def create_job(job_input: JobCreationModel) -> JobEntityModel:
     creation_time = datetime.now()
     global db_last
     id = db_last + 1
@@ -38,7 +38,7 @@ async def create_job(job_input: JobInputModel) -> JobModel:
         "created_date": creation_time,
         "last_modified": creation_time,
     }
-    new_job = JobModel(**fields, **job_input.dict())
+    new_job = JobEntityModel(**fields, **job_input.dict())
     db[id] = new_job
     return new_job
 
@@ -52,14 +52,14 @@ async def delete_job(job_id: int) -> Dict[str, str]:
 
 
 @router.patch("/v1/jobs/{job_id}")
-async def update_job(job_update: JobUpdateModel, job_id: int) -> JobModel:
+async def update_job(job_update: JobUpdateModel, job_id: int) -> JobEntityModel:
     if job_id in db:
-        stored_job = db[job_id]  # stored_job_model = JobModel(**stored_job)
+        stored_job = db[job_id]  # stored_job_model = JobEntityModel(**stored_job)
         update_data = job_update.dict(exclude_unset=True)
         # don't include in the dict the model fields that didn't have value in the job_update object
         print("update data dict: \n", update_data)
         update_data["last_modified"] = datetime.now()
-        updated_job = stored_job.copy(update=update_data)  # type -> JobModel
+        updated_job = stored_job.copy(update=update_data)  # type -> JobEntityModel
         print("updated_job:\n", updated_job)
         db[job_id] = updated_job  # db[job_id] = jsonable_encoder(updated_job)
         print("db[job_id]:\n", db[job_id])

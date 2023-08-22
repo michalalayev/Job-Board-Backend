@@ -13,7 +13,7 @@ class Status(str, Enum):
     terminated = "Terminated"
 
 
-class JobInputModel(BaseModel):
+class JobCreationModel(BaseModel):
     position: str
     company: str
     location: str | None = None
@@ -23,9 +23,12 @@ class JobInputModel(BaseModel):
     # company_site: str
 
 
-class JobModel(JobInputModel):
+class JobEntityModel(BaseModel):
     id: int
-    # status: Status
+    position: str
+    company: str
+    location: str | None = None
+    status: Status = Status.wish_list
     created_date: datetime
     last_modified: datetime
     actions: str = ":"
