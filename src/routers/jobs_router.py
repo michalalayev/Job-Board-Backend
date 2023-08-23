@@ -1,25 +1,24 @@
 from fastapi import APIRouter, HTTPException
-from .db_items import db, db_last
-from .schemas import JobEntityModel, JobCreationModel, JobUpdateModel
+from src.db_items import db, db_last
+from schemas.job_schemas import JobEntityModel, JobCreationModel, JobUpdateModel
 from typing import List, Dict
 from datetime import datetime
 
 # from fastapi.encoders import jsonable_encoder
 
-router = APIRouter()
+router = APIRouter(prefix="/jobs", tags=["jobs"])
+
+# @router.get("/")
+# async def root():
+#     return {"Hello": "World", "Name": "Mic"}
 
 
 @router.get("/")
-async def root():
-    return {"Hello": "World", "Name": "Mic"}
-
-
-@router.get("/v1/jobs")
 async def list_jobs() -> List[JobEntityModel]:
     return list(db.values())
 
 
-@router.get("/v1/jobs/{job_id}")
+@router.get("/{job_id}")
 async def get_job_by_id(job_id: int) -> JobEntityModel:
     if job_id in db:
         return db[job_id]
@@ -27,7 +26,7 @@ async def get_job_by_id(job_id: int) -> JobEntityModel:
 
 
 # TODO: change the model to assign id in a better way,
-@router.post("/v1/jobs")
+@router.post("/")
 async def create_job(job_input: JobCreationModel) -> JobEntityModel:
     creation_time = datetime.now()
     global db_last
@@ -43,7 +42,7 @@ async def create_job(job_input: JobCreationModel) -> JobEntityModel:
     return new_job
 
 
-@router.delete("/v1/jobs/{job_id}")
+@router.delete("/{job_id}")
 async def delete_job(job_id: int) -> Dict[str, str]:
     if job_id in db:
         db.pop(job_id)
@@ -51,7 +50,7 @@ async def delete_job(job_id: int) -> Dict[str, str]:
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
 
 
-@router.patch("/v1/jobs/{job_id}")
+@router.patch("/{job_id}")
 async def update_job(job_update: JobUpdateModel, job_id: int) -> JobEntityModel:
     if job_id in db:
         stored_job = db[job_id]  # stored_job_model = JobEntityModel(**stored_job)

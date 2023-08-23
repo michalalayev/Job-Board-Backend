@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from src.main import app
-from src.jobs.db_items import db, db_last
+from db_items import db, db_last
 from fastapi.encoders import jsonable_encoder
 
 client = TestClient(app)
