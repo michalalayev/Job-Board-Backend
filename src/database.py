@@ -9,6 +9,9 @@ engine = create_engine(mysql_url, echo=True)
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
+def delete_tables():
+    SQLModel.metadata.drop_all(engine)
+
 
 if __name__ == "__main__":
     create_db_and_tables()
