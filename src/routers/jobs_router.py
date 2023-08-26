@@ -1,8 +1,10 @@
 from fastapi import APIRouter, HTTPException
-from src.db_items import db, db_last
-from schemas.job_schemas import JobEntityModel, JobCreationModel, JobUpdateModel
+from src.db_items import db_entities as db, db_last
+from schemas.job_schemas import JobCreationAPIModel, JobUpdateAPIModel
+from domain.job_entity import JobEntity
 from typing import List, Dict
 from datetime import datetime
+from services.jobs_services import JobsService
 
 # from fastapi.encoders import jsonable_encoder
 
@@ -14,20 +16,24 @@ router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
 @router.get("/")
-async def list_jobs() -> List[JobEntityModel]:
-    return list(db.values())
+async def list_jobs() -> List[JobEntity]:
+    return JobsService().get_all_jobs()
+    # return list(db.values())
 
 
 @router.get("/{job_id}")
-async def get_job_by_id(job_id: int) -> JobEntityModel:
-    if job_id in db:
-        return db[job_id]
+async def get_job_by_id(job_id: int) -> JobEntity:
+    job = JobsService().get_job_by_id(job_id)
+    if job:
+        return job
     raise HTTPException(status_code=404, detail=f"Job with id {job_id} does not exist")
+    # if job_id in db:
+    #     return db[job_id]
 
 
 # TODO: change the model to assign id in a better way,
 @router.post("/")
-async def create_job(job_input: JobCreationModel) -> JobEntityModel:
+async def create_job(job_input: JobCreationAPIModel) -> JobEntity:
     creation_time = datetime.now()
     global db_last
     id = db_last + 1
@@ -37,7 +43,7 @@ async def create_job(job_input: JobCreationModel) -> JobEntityModel:
         "created_date": creation_time,
         "last_modified": creation_time,
     }
-    new_job = JobEntityModel(**fields, **job_input.dict())
+    new_job = JobEntity(**fields, **job_input.dict())
     db[id] = new_job
     return new_job
 
@@ -51,14 +57,18 @@ async def delete_job(job_id: int) -> Dict[str, str]:
 
 
 @router.patch("/{job_id}")
-async def update_job(job_update: JobUpdateModel, job_id: int) -> JobEntityModel:
+async def update_job(job_update: JobUpdateAPIModel, job_id: int) -> JobEntity:
     if job_id in db:
-        stored_job = db[job_id]  # stored_job_model = JobEntityModel(**stored_job)
+        stored_job = db[job_id]  # stored_job_model = JobEntity(**stored_job)
         update_data = job_update.dict(exclude_unset=True)
-        # don't include in the dict the model fields that didn't have value in the job_update object
+        # don't include in the dict the model fields that job_update didn't have values for
+        print(
+            "update_data dict wo exclude_unset: \n",
+            job_update.dict(exclude_unset=False),
+        )
         print("update data dict: \n", update_data)
         update_data["last_modified"] = datetime.now()
-        updated_job = stored_job.copy(update=update_data)  # type -> JobEntityModel
+        updated_job = stored_job.copy(update=update_data)  # type -> JobEntity
         print("updated_job:\n", updated_job)
         db[job_id] = updated_job  # db[job_id] = jsonable_encoder(updated_job)
         print("db[job_id]:\n", db[job_id])
@@ -68,7 +78,7 @@ async def update_job(job_update: JobUpdateModel, job_id: int) -> JobEntityModel:
 
 def run():
     print(db[10], "\n")
-    job_update = JobUpdateModel(position="pos2", location="Center")
+    job_update = JobUpdateAPIModel(position="pos2", location="Center")
     res = update_job(job_update, 10)
     print(res, "\n")
     print(f"updated_job type: {type(res)}\n")

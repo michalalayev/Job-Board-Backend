@@ -11,7 +11,7 @@ app.include_router(jobs_router.router, prefix="/v1")
 async def root():
     return {"Hello": "World"}
 
+
 @app.on_event("startup")
 async def startup_event():
     JobsService().load_data_at_startup()
-

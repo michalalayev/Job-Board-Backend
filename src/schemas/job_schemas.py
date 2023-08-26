@@ -1,19 +1,10 @@
-# pydantic models
+# pydantic models for the API
 
 from pydantic import BaseModel
-from datetime import datetime
-from enum import Enum
+from domain.job_entity import Status
 
 
-class Status(str, Enum):
-    wish_list = "Wish List"
-    applied = "Applied"
-    interview = "Interview"
-    offer = "Offer"
-    terminated = "Terminated"
-
-
-class JobCreationModel(BaseModel):
+class JobCreationAPIModel(BaseModel):
     position: str
     company: str
     location: str | None = None
@@ -23,21 +14,7 @@ class JobCreationModel(BaseModel):
     # company_site: str
 
 
-class JobEntityModel(BaseModel):
-    id: int
-    position: str
-    company: str
-    location: str | None = None
-    status: Status = Status.wish_list
-    created_date: datetime
-    last_modified: datetime
-    actions: str = ":"
-    # link: str
-    # source: str
-    # company_site: str
-
-
-class JobUpdateModel(BaseModel):
+class JobUpdateAPIModel(BaseModel):
     position: str | None = None
     company: str | None = None
     location: str | None = None

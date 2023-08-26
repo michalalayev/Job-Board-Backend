@@ -1,13 +1,13 @@
 from typing import List, Dict
-from src.schemas.job_schemas import JobEntityModel, Status
+from domain.job_entity import JobEntity, Status
 from datetime import datetime
 from models.job_models import JobSQLModel
 
 # global db_last
 db_last: int = 10
 
-db: Dict[int, JobEntityModel] = {
-    0: JobEntityModel(
+db_entities: Dict[int, JobEntity] = {
+    0: JobEntity(
         id=0,
         position="Backend Engineer",
         company="Verily",
@@ -16,7 +16,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2022, 11, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    1: JobEntityModel(
+    1: JobEntity(
         id=1,
         position="Fullstack Engineer",
         company="Google",
@@ -25,7 +25,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2021, 10, 30, 10, 33, 30, 0),
         status=Status.offer,
     ),
-    2: JobEntityModel(
+    2: JobEntity(
         id=2,
         position="Software Engineer",
         company="Taboola",
@@ -34,7 +34,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2019, 10, 30, 10, 33, 30, 0),
         status=Status.interview,
     ),
-    3: JobEntityModel(
+    3: JobEntity(
         id=3,
         position="Backend Engineer",
         company="Wix",
@@ -43,7 +43,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2022, 9, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    4: JobEntityModel(
+    4: JobEntity(
         id=4,
         position="Fullstack Engineer",
         company="Google",
@@ -52,7 +52,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2023, 3, 24, 10, 33, 30, 0),
         status=Status.wish_list,
     ),
-    5: JobEntityModel(
+    5: JobEntity(
         id=5,
         position="Software Engineer",
         company="Check Point",
@@ -61,7 +61,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2022, 9, 30, 10, 33, 30, 0),
         status=Status.interview,
     ),
-    6: JobEntityModel(
+    6: JobEntity(
         id=6,
         position="Fullstack Engineer",
         company="Elbit",
@@ -70,7 +70,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2023, 3, 29, 13, 33, 30, 0),
         status=Status.wish_list,
     ),
-    7: JobEntityModel(
+    7: JobEntity(
         id=7,
         position="Software Engineer",
         company="IronSource",
@@ -79,7 +79,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2022, 10, 30, 10, 33, 30, 0),
         status=Status.terminated,
     ),
-    8: JobEntityModel(
+    8: JobEntity(
         id=8,
         position="Fullstack Engineer",
         company="Wix",
@@ -88,7 +88,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2019, 9, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    9: JobEntityModel(
+    9: JobEntity(
         id=9,
         position="Software Engineer",
         company="Verily",
@@ -97,7 +97,7 @@ db: Dict[int, JobEntityModel] = {
         last_modified=datetime(2023, 3, 24, 10, 34, 30, 0),
         status=Status.wish_list,
     ),
-    10: JobEntityModel(
+    10: JobEntity(
         id=10,
         position="Sofware Developer",
         company="Check Point",
@@ -109,8 +109,8 @@ db: Dict[int, JobEntityModel] = {
 }
 
 
-db_as_list: List[JobEntityModel] = [
-    JobEntityModel(
+db_as_list: List[JobEntity] = [
+    JobEntity(
         id=0,
         position="Backend Engineer",
         company="Verily",
@@ -119,7 +119,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2022, 11, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    JobEntityModel(
+    JobEntity(
         id=1,
         position="Fullstack Engineer",
         company="Google",
@@ -128,7 +128,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2021, 10, 30, 10, 33, 30, 0),
         status=Status.offer,
     ),
-    JobEntityModel(
+    JobEntity(
         id=2,
         position="Software Engineer",
         company="Taboola",
@@ -137,7 +137,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2019, 10, 30, 10, 33, 30, 0),
         status=Status.interview,
     ),
-    JobEntityModel(
+    JobEntity(
         id=3,
         position="Backend Engineer",
         company="Wix",
@@ -146,7 +146,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2022, 9, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    JobEntityModel(
+    JobEntity(
         id=4,
         position="Fullstack Engineer",
         company="Google",
@@ -155,7 +155,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2023, 3, 24, 10, 33, 30, 0),
         status=Status.wish_list,
     ),
-    JobEntityModel(
+    JobEntity(
         id=5,
         position="Software Engineer",
         company="Check Point",
@@ -164,7 +164,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2022, 9, 30, 10, 33, 30, 0),
         status=Status.interview,
     ),
-    JobEntityModel(
+    JobEntity(
         id=6,
         position="Fullstack Engineer",
         company="Elbit",
@@ -173,7 +173,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2023, 3, 29, 13, 33, 30, 0),
         status=Status.wish_list,
     ),
-    JobEntityModel(
+    JobEntity(
         id=7,
         position="Software Engineer",
         company="IronSource",
@@ -182,7 +182,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2022, 10, 30, 10, 33, 30, 0),
         status=Status.terminated,
     ),
-    JobEntityModel(
+    JobEntity(
         id=8,
         position="Fullstack Engineer",
         company="Wix",
@@ -191,7 +191,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2019, 9, 25, 10, 33, 30, 0),
         status=Status.applied,
     ),
-    JobEntityModel(
+    JobEntity(
         id=9,
         position="Software Engineer",
         company="Verily",
@@ -200,7 +200,7 @@ db_as_list: List[JobEntityModel] = [
         last_modified=datetime(2023, 3, 24, 10, 34, 30, 0),
         status=Status.wish_list,
     ),
-    JobEntityModel(
+    JobEntity(
         id=10,
         position="Sofware Developer",
         company="Check Point",

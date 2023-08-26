@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from src.main import app
-from db_items import db, db_last
+from db_items import db_entities as db, db_last
 from fastapi.encoders import jsonable_encoder
 
 client = TestClient(app)
@@ -32,13 +32,13 @@ def test_get_inexistent_job():
 
 def test_update_job():
     response = client.patch(
-        "v1/jobs/0",
+        "v1/jobs/1",
         json={"position": "pos", "company": "comp", "location": "Center"},
     )
     assert response.status_code == 200
     assert response.json()["position"] == "pos"
     assert response.json()["company"] == "comp"
-    response_get = client.get("v1/jobs/0")
+    response_get = client.get("v1/jobs/1")
     assert response.json() == response_get.json()
 
 
