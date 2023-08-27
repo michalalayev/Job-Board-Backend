@@ -7,6 +7,7 @@ from datetime import datetime
 from schemas.job_schemas import JobCreationAPIModel, JobUpdateAPIModel
 from domain.job_entity import JobEntity
 from repositories.jobs_repository import IJobsRepository, JobsRepository
+# from services.input_validator import InputValidator
 
 
 class IJobsService(ABC):
@@ -51,6 +52,8 @@ class JobsService(IJobsService):
 
     def create_job(self, job_input: JobCreationAPIModel) -> JobEntity:
         creation_time = datetime.now()
+        # if not InputValidator(job_input).validate_status():
+        #     return None
         fields = {
             "id": 0,  # dummy value, need value to create JobEntity
             "created_date": creation_time,

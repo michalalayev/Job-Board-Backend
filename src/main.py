@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers import jobs_router
 from services.jobs_services import JobsService
-from database import create_db_and_tables, delete_tables
+from database import create_db_and_tables  # , delete_tables
 
 app = FastAPI()
 
@@ -19,6 +19,9 @@ async def startup_event():
     JobsService().load_data_at_startup()
 
 
-@app.on_event("shutdown")
-def shutdown_event():
-    delete_tables()
+# enable only when want to restart the table.
+# On every reload there is a shutdown event, so if it's enabled all the time,
+# the table is deleted on every change of the code.
+# @app.on_event("shutdown")
+# def shutdown_event():
+#     delete_tables()

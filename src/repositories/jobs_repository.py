@@ -122,7 +122,7 @@ class JobsRepository(IJobsRepository):
                     session.add(job)
                 session.commit()
 
-    def delete_data_from_table(self) -> None:  # deletes only the rows
+    def delete_data_from_table(self) -> None:  # deletes only the rows, table stays
         with self.session as session:
             statement = select(JobSQLModel)
             results = session.exec(statement)

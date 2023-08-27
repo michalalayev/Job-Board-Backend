@@ -3,6 +3,7 @@ from src.db_items import db_entities as db  # , db_last
 from schemas.job_schemas import JobCreationAPIModel, JobUpdateAPIModel
 from domain.job_entity import JobEntity
 from typing import List, Dict
+
 # from datetime import datetime
 from services.jobs_services import JobsService
 

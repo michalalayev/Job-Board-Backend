@@ -24,3 +24,14 @@ class JobEntity(BaseModel):
     # source: str
     # company_site: str
 
+
+# if __name__ == "__main__":
+#     members = Status.__members__
+#     print("members: \n", members)
+#     values = members.values()
+#     print("values: \n", values)
+#     for val in values:
+#         print(val.value)
+#     values = [member.value for member in Status]
+#     print(values)
+#     print(Status._value2member_map_)

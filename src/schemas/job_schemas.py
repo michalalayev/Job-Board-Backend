@@ -18,7 +18,7 @@ class JobUpdateAPIModel(BaseModel):
     position: str | None = None
     company: str | None = None
     location: str | None = None
-    status: str | None = None
+    status: Status | None = None
     # link: str
     # source: str
     # company_site: str
