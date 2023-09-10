@@ -2,8 +2,19 @@ from fastapi import FastAPI
 from routers import jobs_router
 from services.jobs_services import JobsService
 from database import create_db_and_tables  # , delete_tables
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = ["http://localhost:3000"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(jobs_router.router, prefix="/v1")
 

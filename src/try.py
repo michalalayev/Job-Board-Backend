@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 def dates():
     print(" ")
@@ -12,8 +13,12 @@ def dates():
     print(s)
 
 
+def change(lst: List[int]):
+    lst.append(0)
+    lst = []
 
 
-
-
-
+if __name__ == "__main__":
+    lst1 = [1, 2, 3]
+    change(lst1)
+    print(lst1)
